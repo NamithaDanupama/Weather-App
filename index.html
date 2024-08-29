@@ -22,6 +22,12 @@
     </div>
 
     <div class="container">
+        <!-- Date and Time Display -->
+        <section class="datetime" id="datetime">
+            <p id="currentDateTime"></p>
+        </section>
+
+        <!-- Search Section -->
         <section class="search-section">
             <input type="text" id="locationInput" placeholder="Enter city or country" />
             <button id="getWeatherBtn" class="fancy-button">Get Weather</button>
@@ -32,9 +38,16 @@
             </select>
         </section>
 
+        <!-- Weather Details Sections -->
         <section id="weatherDetails" class="weather-details"></section>
         <section id="forecastDetails" class="forecast-details"></section>
         <section id="historicalDetails" class="historical-details"></section>
+
+        <!-- Weather Cards Section -->
+        <section class="weather-cards" id="weatherCards">
+            <h2>Weather in Different Cities</h2>
+            <div class="cards-container" id="cardsContainer"></div>
+        </section>
     </div>
 
     <script src="script.js"></script>

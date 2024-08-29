@@ -1,5 +1,5 @@
 // Define your Weather API key
-const API_KEY = 'YOUR_API_KEY_HERE';
+const API_KEY = '8a21eb247cec47a0b19140152242908';
 
 // Fetch weather data using the Weather API
 async function fetchWeather(location, unit = 'metric') {
@@ -110,3 +110,48 @@ document.getElementById('themeToggle').addEventListener('click', () => {
     themeIcon.classList.toggle('fa-moon');
     themeIcon.classList.toggle('fa-sun');
 });
+
+// Display current date and time
+function showDateTime() {
+    const dateTimeElement = document.getElementById('currentDateTime');
+    setInterval(() => {
+        const now = new Date();
+        dateTimeElement.textContent = now.toLocaleString();
+    }, 1000);
+}
+showDateTime();
+
+// Fetch weather data for multiple cities and display as cards
+async function fetchWeatherForCities(cities) {
+    const cardsContainer = document.getElementById('cardsContainer');
+    cardsContainer.innerHTML = ''; // Clear previous cards
+
+    for (const city of cities) {
+        try {
+            const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`);
+            const data = await response.json();
+            createWeatherCard(data);
+        } catch (error) {
+            console.error(`Error fetching weather data for ${city}:`, error);
+        }
+    }
+}
+
+// Create a weather card
+function createWeatherCard(data) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+        <img src="https:${data.current.condition.icon}" alt="Weather Icon">
+        <p>${data.location.name}</p>
+        <p>${data.current.temp_c}°C / ${data.current.temp_f}°F</p>
+        <p>${data.current.condition.text}</p>
+    `;
+    document.getElementById('cardsContainer').appendChild(card);
+}
+
+// Predefined cities to show on the homepage
+const cities = ['London', 'New York', 'Tokyo', 'Sydney', 'Paris'];
+fetchWeatherForCities(cities);
+
+
