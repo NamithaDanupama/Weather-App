@@ -2,7 +2,7 @@
 body {
     font-family: 'Arial', sans-serif;
     background: #f0f2f5;
-    color: #333;
+    color: #333; /* Default color */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -235,12 +235,69 @@ input, select, button {
 }
 
 
+
+/* General Styling */
+
+
+/* Dark Mode */
 .dark-mode {
     background: #333;
-    color: #f0f2f5;
+    color: #f0f2f5; /* Change text color to white in dark mode */
     transition: background 0.5s, color 0.5s;
 }
 
 .dark-mode .container {
-    background: #444;
+    background: #444; /* Change container background color in dark mode */
+}
+
+/* Header Section */
+.header h1 {
+    margin: 0;
+    font-size: 5rem;
+    color: #ffffff; /* Default color */
+}
+
+/* Date and Time Section */
+.datetime {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #000000; /* Default color */
+}
+
+.dark-mode .datetime {
+    color: #f0f2f5; /* Change date and time text color to white in dark mode */
+}
+
+/* Search and Button Styles */
+input, select, button {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+    color: #000; /* Default color */
+}
+
+.dark-mode input, 
+.dark-mode select, 
+.dark-mode button {
+    color: #fff; /* Change input, select, and button text color to white in dark mode */
+}
+
+/* Weather Cards Section */
+.weather-cards h2 {
+    margin-bottom: 10px;
+    color: #020202; /* Default color */
+    font-size: xx-large;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.dark-mode .weather-cards h2 {
+    color: #f0f2f5; /* Change weather cards header text color to white in dark mode */
+}
+
+/* Card Styles */
+.dark-mode .card {
+    background: linear-gradient(135deg, #414345, #232526);
+    color: #ddd; /* Change card text color to light grey in dark mode */
 }

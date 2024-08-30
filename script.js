@@ -154,4 +154,81 @@ function createWeatherCard(data) {
 const cities = ['London', 'New York', 'Tokyo', 'Sydney', 'Paris'];
 fetchWeatherForCities(cities);
 
+// Display current weather data and location
+function displayWeather(data) {
+    const weatherDetails = document.getElementById('weatherDetails');
+    const { lat, lon } = data.location; // Extract latitude and longitude from the data
 
+    weatherDetails.innerHTML = `
+        <h2>Current Weather in ${data.location.name}, ${data.location.country}</h2>
+        <p>Temperature: ${data.current.temp_c}°C (${data.current.temp_f}°F)</p>
+        <p>Condition: ${data.current.condition.text}</p>
+        <p>Humidity: ${data.current.humidity}%</p>
+        <p>Wind Speed: ${data.current.wind_kph} km/h</p>
+        <p><strong>Location:</strong> Latitude: ${lat}, Longitude: ${lon}</p> <!-- Display location -->
+    `;
+}
+
+// Event listener for the button click
+document.getElementById('getWeatherBtn').addEventListener('click', () => {
+    const location = document.getElementById('locationInput').value;
+    const unit = document.getElementById('unitSelect').value === 'metric' ? 'C' : 'F';
+    if (location) {
+        fetchWeather(location, unit);  // Fetch weather data including location
+        fetchForecast(location, unit);
+        fetchHistorical(location);
+    } else {
+        alert('Please enter a location.');
+    }
+});
+
+// Initialize the map and set default view
+let map; // Declare map variable globally
+function initializeMap(lat, lon) {
+    if (!map) { // Initialize map only once
+        map = L.map('map').setView([lat, lon], 10); // Default zoom level set to 10
+
+        // Add Tile Layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+    } else {
+        map.setView([lat, lon], 10); // Update map view if already initialized
+    }
+
+    // Add Marker to Map
+    L.marker([lat, lon]).addTo(map)
+        .bindPopup(`Location: Latitude ${lat}, Longitude ${lon}`)
+        .openPopup();
+}
+
+// Display current weather data and location with map
+function displayWeather(data) {
+    const weatherDetails = document.getElementById('weatherDetails');
+    const { lat, lon } = data.location; // Extract latitude and longitude from the data
+
+    weatherDetails.innerHTML = `
+        <h2>Current Weather in ${data.location.name}, ${data.location.country}</h2>
+        <p>Temperature: ${data.current.temp_c}°C (${data.current.temp_f}°F)</p>
+        <p>Condition: ${data.current.condition.text}</p>
+        <p>Humidity: ${data.current.humidity}%</p>
+        <p>Wind Speed: ${data.current.wind_kph} km/h</p>
+        <p><strong>Location:</strong> Latitude: ${lat}, Longitude: ${lon}</p>
+    `;
+
+    initializeMap(lat, lon); // Initialize or update the map
+}
+
+// Event listener for the button click
+document.getElementById('getWeatherBtn').addEventListener('click', () => {
+    const location = document.getElementById('locationInput').value;
+    const unit = document.getElementById('unitSelect').value === 'metric' ? 'C' : 'F';
+    if (location) {
+        fetchWeather(location, unit);  // Fetch weather data including location
+        fetchForecast(location, unit);
+        fetchHistorical(location);
+    } else {
+        alert('Please enter a location.');
+    }
+});
