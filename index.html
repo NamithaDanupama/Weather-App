@@ -34,14 +34,13 @@
             <input type="text" id="locationInput" placeholder="Enter city or country" />
             <button id="getWeatherBtn" class="fancy-button">Get Weather</button>
             <button id="getLocationBtn" class="fancy-button">Use My Location</button>
-            <select id="unitSelect">
+            <!-- <select id="unitSelect">
                 <option value="metric">Celsius</option>
                 <option value="imperial">Fahrenheit</option>
-            </select>
+            </select> -->
         </section>
 
-        <div id="map" style="height: 400px; width: 100%; margin-top: 20px;"></div> <!-- New Map Container -->
-
+        <div id="map" style="height: 400px; width: 100%; margin-top: 20px; display: none;"></div> <!-- Hide by default -->
         <!-- Weather Details Sections -->
         <section id="weatherDetails" class="weather-details"></section>
         <section id="forecastDetails" class="forecast-details"></section>

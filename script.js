@@ -169,38 +169,76 @@ function displayWeather(data) {
     `;
 }
 
+// Default unit for temperature
+const DEFAULT_UNIT = 'metric'; // 'metric' for Celsius, 'imperial' for Fahrenheit
+
 // Event listener for the button click
 document.getElementById('getWeatherBtn').addEventListener('click', () => {
     const location = document.getElementById('locationInput').value;
-    const unit = document.getElementById('unitSelect').value === 'metric' ? 'C' : 'F';
     if (location) {
-        fetchWeather(location, unit);  // Fetch weather data including location
-        fetchForecast(location, unit);
+        fetchWeather(location, DEFAULT_UNIT);  // Fetch weather data with default unit
+        fetchForecast(location, DEFAULT_UNIT);
         fetchHistorical(location);
     } else {
         alert('Please enter a location.');
     }
 });
 
-// Initialize the map and set default view
+// Use the default unit when fetching weather for the current location
+document.getElementById('getLocationBtn').addEventListener('click', () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            const { latitude, longitude } = position.coords;
+            fetchWeather(`${latitude},${longitude}`, DEFAULT_UNIT);
+            fetchForecast(`${latitude},${longitude}`, DEFAULT_UNIT);
+            initializeMap(latitude, longitude); // Initialize or update the map with current location
+        }, error => {
+            alert('Unable to retrieve your location. Please enter it manually.');
+        });
+    } else {
+        alert('Geolocation is not supported by your browser.');
+    }
+});
+
+
 let map; // Declare map variable globally
+
 function initializeMap(lat, lon) {
-    if (!map) { // Initialize map only once
-        map = L.map('map').setView([lat, lon], 10); // Default zoom level set to 10
+    const mapContainer = document.getElementById('map');
+    
+    // Show the map container
+    if (mapContainer.style.display === 'none') {
+        mapContainer.style.display = 'block'; // Show the map container
+        console.log('Map container is now visible');
+    }
+
+    // Initialize map if it doesn't exist
+    if (!map) { 
+        map = L.map('map').setView([lat, lon], 10); // Initialize map
 
         // Add Tile Layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
+        
+        console.log('Map initialized');
     } else {
         map.setView([lat, lon], 10); // Update map view if already initialized
+        console.log('Map view updated');
+    }
+
+    // Remove previous markers if any
+    if (map.hasLayer(marker)) {
+        map.removeLayer(marker);
     }
 
     // Add Marker to Map
-    L.marker([lat, lon]).addTo(map)
+    const marker = L.marker([lat, lon]).addTo(map)
         .bindPopup(`Location: Latitude ${lat}, Longitude ${lon}`)
         .openPopup();
+    
+    console.log('Marker added to map at: ', lat, lon);
 }
 
 // Display current weather data and location with map
@@ -232,3 +270,20 @@ document.getElementById('getWeatherBtn').addEventListener('click', () => {
         alert('Please enter a location.');
     }
 });
+
+// Event listener for using current location
+document.getElementById('getLocationBtn').addEventListener('click', () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            const { latitude, longitude } = position.coords;
+            fetchWeather(`${latitude},${longitude}`);
+            fetchForecast(`${latitude},${longitude}`);
+            initializeMap(latitude, longitude); // Initialize or update the map with current location
+        }, error => {
+            alert('Unable to retrieve your location. Please enter it manually.');
+        });
+    } else {
+        alert('Geolocation is not supported by your browser.');
+    }
+});
+
